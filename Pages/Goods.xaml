@@ -13,22 +13,23 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button HorizontalAlignment="Left" Width="60px" Height="20px">添加</Button>
+            <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">添加</Button>
         </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer>
-                <DataGrid>
+                <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="商品名" Width="80" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="售价" Width="50" Binding="{Binding Price}"/>
-                        <DataGridComboBoxColumn Width="80" Header="进价" 
-                                        SelectedItemBinding="{Binding InPrice}" />
-                        <DataGridCheckBoxColumn Header="备注" Width="100" 
+                        <DataGridTextColumn Header="商品名" Width="80" Binding="{Binding GoodName}"/>
+                        <DataGridTextColumn Header="单位" Width="80" Binding="{Binding Unit}"/>
+                        <DataGridTextColumn Header="售价" Width="50" Binding="{Binding SellPrice}"/>
+                        <DataGridTextColumn Width="80" Header="进价" 
+                                        Binding="{Binding InPrice}" />
+                        <DataGridTextColumn Header="备注" Width="100" 
                                         Binding="{Binding Remarks}"/>
-                        <DataGridHyperlinkColumn Header="使用中" Width="150" 
-                                         Binding="{Binding InUsed}"/>
-                        <DataGridHyperlinkColumn Header="操作" Width="150" 
-                                         Binding="{Binding InUsed}"/>
+                        <DataGridTextColumn Header="使用中" Width="150" 
+                                         Binding="{Binding IsEnabled}"/>
+                        <DataGridTextColumn Header="操作" Width="150" 
+                                        />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
