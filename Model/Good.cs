@@ -6,11 +6,12 @@ namespace 记账.Model
 {
     public class Good
     {
+        public string Id { get; set; }
         public string GoodName { get; set; }
-        public decimal SellPrice { get; set; }
-        public decimal InPrice { get; set; }
+        public string SellPrice { get; set; }
+        public string InPrice { get; set; }
         public string Remarks { get; set; }
-        public bool IsEnabled { get; set; }
+        public int IsEnabled { get; set; }
         public string Unit { get; set; }
     }
 }

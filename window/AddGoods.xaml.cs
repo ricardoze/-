@@ -63,17 +63,17 @@ namespace 记账.window
                 Unit.Text = "单位不能为空";
                 return;
             }
-            if (WindowGood.SellPrice==0)
+            if (string.IsNullOrEmpty(WindowGood.SellPrice))
             {
                 SellPrice.Text = "售价不能为空";
                 return;
             }
-            if (WindowGood.InPrice == 0)
+            if (string.IsNullOrEmpty(WindowGood.InPrice) )
             {
                 InPrice.Text = "进价不能为空";
                 return;
             }
-         
+            WindowGood.Id = Guid.NewGuid().ToString();
             this.Close();
         }
 
