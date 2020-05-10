@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using 记账.Model;
+using 记账.Service;
 
 namespace 记账.window
 {
@@ -73,7 +74,17 @@ namespace 记账.window
                 InPrice.Text = "进价不能为空";
                 return;
             }
-            WindowGood.Id = Guid.NewGuid().ToString();
+
+            if (string.IsNullOrEmpty(WindowGood.Id))
+            {
+                WindowGood.Id = Guid.NewGuid().ToString();
+                new GoodService().AddGood(WindowGood);
+            }
+            else
+            {
+                new GoodService().UpdateGood(WindowGood);
+            }
+           
             this.Close();
         }
 

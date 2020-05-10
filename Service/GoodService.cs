@@ -12,8 +12,30 @@ namespace 记账.Service
     {
         public DataTable GetGoods()
         {
-            DataTable dt = SqlService.ExecuteQuery("select * from Goods order by id;");
+            DataTable dt = new SqlService().ExecuteQuery("select * from Goods order by id;");
             return dt;
+
+        }
+
+        public DataTable GetGoodById(string id)
+        {
+            DataTable dt = new SqlService().ExecuteQuery("select * from Goods where id = '" +id+"';");
+            return dt;
+
+        }
+
+        public void AddGood(Good good)
+        {
+            new SqlService().ExecuteNonQuery("INSERT INTO 'main'.'Goods'('Id', 'GoodName', 'SellPrice', 'InPrice', 'Remarks', 'IsEnabled', 'Unit')" +
+                " VALUES ('"+good.Id+ "', '" + good.GoodName + "', '" + good.SellPrice + "', '" + good.InPrice + "', '" + good.Remarks + "', " + good.IsEnabled + ", '" + good.Unit + "');");
+
+        }
+
+        public void UpdateGood(Good good)
+        {
+            new SqlService().ExecuteNonQuery("update 'main'.'Goods' " +
+                " set  GoodName ='" + good.GoodName + "', SellPrice = '" + good.SellPrice + "', InPrice='" + good.InPrice + "', Remarks='" + good.Remarks + "', IsEnabled=" 
+                + good.IsEnabled + ", Unit= '" + good.Unit + "' where id ='"+ good .Id+ "';");
 
         }
     }

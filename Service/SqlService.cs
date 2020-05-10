@@ -25,7 +25,7 @@ namespace 记账.Service
         }
 
         // 使用全局静态变量保存连接
-        private static SQLiteConnection connection = CreateDatabaseConnection();
+        private SQLiteConnection connection = CreateDatabaseConnection();
 
         // 判断连接是否处于打开状态
         private static void Open(SQLiteConnection connection)
@@ -36,24 +36,22 @@ namespace 记账.Service
             }
         }
 
-        public static void ExecuteNonQuery(string sql)
+        public  void ExecuteNonQuery(string sql)
         {
             using (SQLiteConnection conn = connection)
             {
                 using (SQLiteCommand cmd = new SQLiteCommand())
                 {
                     cmd.Connection = conn;
-                    conn.Open();
-
+                    connection.Open();
                     sh = new SQLiteHelper(cmd);
                     sh.Execute(sql);
-
-                    conn.Close();
+                    connection.Dispose();
                 }
             }
         }
 
-        public static DataTable ExecuteQuery(string sql)
+        public  DataTable ExecuteQuery(string sql)
         {
             DataTable dataTable;
             using (SQLiteConnection conn =connection)
@@ -61,17 +59,16 @@ namespace 记账.Service
                 using (SQLiteCommand cmd = new SQLiteCommand())
                 {
                     cmd.Connection = conn;
-                    conn.Open();
-
+                    connection.Open();
                     sh = new SQLiteHelper(cmd);
                      dataTable =  sh.Select(sql);
+                    connection.Dispose();
                     // do something...
-
-                    conn.Close();
                 }
             }
             return dataTable;
         }
 
+      
     }
 }

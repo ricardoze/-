@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Reflection;
@@ -71,12 +72,60 @@ namespace 记账.Pages
             return lst;
         }
 
+        public T ToObject<T>(DataTable dt) where T : class, new()
+        {
+            Type t = typeof(T);
+            PropertyInfo[] propertys = t.GetProperties();
+            List<T> lst = new List<T>();
+            string typeName = string.Empty;
+            foreach (DataRow dr in dt.Rows)
+            {
+                T entity = new T();
+                foreach (PropertyInfo pi in propertys)
+                {
+                    typeName = pi.Name;
+                    if (dt.Columns.Contains(typeName))
+                    {
+                        if (!pi.CanWrite) continue;
+                        object value = dr[typeName];
+                        if (value == DBNull.Value) continue;
+                        if (pi.PropertyType == typeof(string))
+                        {
+                            pi.SetValue(entity, value.ToString(), null);
+                        }
+                        else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(int?))
+                        {
+                            pi.SetValue(entity, int.Parse(value.ToString()), null);
+                        }
+                        else if (pi.PropertyType == typeof(DateTime?) || pi.PropertyType == typeof(DateTime))
+                        {
+                            pi.SetValue(entity, DateTime.Parse(value.ToString()), null);
+                        }
+                        else if (pi.PropertyType == typeof(float))
+                        {
+                            pi.SetValue(entity, float.Parse(value.ToString()), null);
+                        }
+                        else if (pi.PropertyType == typeof(double))
+                        {
+                            pi.SetValue(entity, double.Parse(value.ToString()), null);
+                        }
+                        else
+                        {
+                            pi.SetValue(entity, value, null);
+                        }
+                    }
+                }
+                lst.Add(entity);
+            }
+            return lst[0];
+        }
+
         ObservableCollection<Good> dataList;
         public Goods()
         {
             InitializeComponent();
-            dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
-            GoodsGrid.ItemsSource = dataList;
+            refreshGoods();
+            
 
         }
 
@@ -84,12 +133,12 @@ namespace 记账.Pages
         {
             Good good = new Good
             {
-                GoodName = "咸菜",
-                Unit = "件",
-                SellPrice = "60",
-                InPrice = "60",
-                Remarks = "通常价格",
-                IsEnabled = 1
+                GoodName = "",
+                Unit = "",
+                SellPrice = "",
+                InPrice = "",
+                Remarks = "",
+                IsEnabled = 0
             };
             Window addGoods = new AddGoods(good);
             addGoods.Show();
@@ -101,19 +150,32 @@ namespace 记账.Pages
             Good NewGood = ((AddGoods)sender).WindowGood;
             if (NewGood != null)
             {
-                dataList.Add(NewGood);
+                refreshGoods();
             }
-   
+
         }
 
         private void BtnAction_Click(object sender, RoutedEventArgs e)
         {
+            Button button = (Button)sender;
+            string goodId = button.Uid;
+            
+            Good good  = ToObject<Good>(new GoodService().GetGoodById(goodId));
 
+            Window addGoods = new AddGoods(good);
+            addGoods.Title = "编辑商品";
+            addGoods.Show();
+            addGoods.Closed += AddGoods_Closed;
         }
 
         private void BtnAction1_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void refreshGoods()
+        {
+            dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
+            GoodsGrid.ItemsSource = dataList;
         }
     }
 }

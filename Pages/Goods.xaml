@@ -34,11 +34,11 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button x:Name="BtnAction" Content="编辑" Height="34"
-                                    Width="80" Click="BtnAction_Click" IsEnabled="{Binding Enabled}"
+                                    Width="80" Click="BtnAction_Click" Uid="{Binding Id}"
                                     FontSize="20"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                         <Button x:Name="BtnAction1" Content="删除" Height="34"
-                                    Width="80" Click="BtnAction1_Click" IsEnabled="{Binding Enabled1}"
+                                    Width="80" Click="BtnAction1_Click" Uid="{Binding Id}"
                                     FontSize="20"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                     </StackPanel>
