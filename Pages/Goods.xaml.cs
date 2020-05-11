@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -125,7 +126,7 @@ namespace 记账.Pages
         {
             InitializeComponent();
             refreshGoods();
-            
+
 
         }
 
@@ -159,8 +160,8 @@ namespace 记账.Pages
         {
             Button button = (Button)sender;
             string goodId = button.Uid;
-            
-            Good good  = ToObject<Good>(new GoodService().GetGoodById(goodId));
+
+            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
 
             Window addGoods = new AddGoods(good);
             addGoods.Title = "编辑商品";
@@ -170,12 +171,26 @@ namespace 记账.Pages
 
         private void BtnAction1_Click(object sender, RoutedEventArgs e)
         {
+            Button button = (Button)sender;
+            string goodId = button.Uid;
 
+            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
+            if (good.IsEnabled == 1)
+            {
+                good.IsEnabled = 0;
+            }
+            else {
+                good.IsEnabled = 1;
+            }
+            new GoodService().UpdateGood(good);
+            refreshGoods();
         }
         private void refreshGoods()
         {
             dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
             GoodsGrid.ItemsSource = dataList;
         }
+
     }
+   
 }
