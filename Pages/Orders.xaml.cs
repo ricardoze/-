@@ -24,7 +24,7 @@ namespace 记账.Pages
     /// <summary>
     /// Page1.xaml 的交互逻辑
     /// </summary>
-    public partial class Goods : Page
+    public partial class Orders : Page
     {
         public ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
         {
@@ -124,7 +124,7 @@ namespace 记账.Pages
 
         ObservableCollection<Good> dataList;
         ObservableCollection<String> GoodTypes;
-        public Goods()
+        public Orders()
         {
             InitializeComponent();
             loadGoodTypes();
@@ -135,18 +135,7 @@ namespace 记账.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Good good = new Good
-            {
-                GoodName = "",
-                Unit = "",
-                SellPrice = "",
-                InPrice = "",
-                Remarks = "",
-                IsEnabled = 0
-            };
-            Window addGoods = new AddGoods(good);
-            addGoods.Show();
-            addGoods.Closed += AddGoods_Closed;
+            Order order = new Order();
         }
 
         private void AddGoods_Closed(object sender, EventArgs e)
@@ -187,7 +176,6 @@ namespace 记账.Pages
             }
             new GoodService().UpdateGood(good);
 
-            refreshGoods(goodTypes.SelectedItem.ToString());
         }
         private void refreshGoods(string goodType=null)
         {
@@ -231,18 +219,18 @@ namespace 记账.Pages
                     GoodTypes.Add(item.goodtype.ToString());
                 }
             }
-            goodTypes.ItemsSource = GoodTypes;
-            if(goodTypes.SelectedIndex < 0)
-            {
-                goodTypes.SelectedIndex = 0;
-            }
+            
             
         }
 
         private void goodTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            refreshGoods(goodTypes.SelectedItem.ToString());
             GoodsGrid.ItemsSource = dataList;
+        }
+
+        private void customers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
    

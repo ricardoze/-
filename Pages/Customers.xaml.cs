@@ -24,7 +24,7 @@ namespace 记账.Pages
     /// <summary>
     /// Page1.xaml 的交互逻辑
     /// </summary>
-    public partial class Goods : Page
+    public partial class Customers : Page
     {
         public ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
         {
@@ -122,39 +122,38 @@ namespace 记账.Pages
             return lst[0];
         }
 
-        ObservableCollection<Good> dataList;
-        ObservableCollection<String> GoodTypes;
-        public Goods()
+        ObservableCollection<Customer> dataList;
+        ObservableCollection<String> CustomerTypes;
+        public Customers()
         {
             InitializeComponent();
-            loadGoodTypes();
-            refreshGoods("全部");
-
+            refreshCustomers("全部");
+            loadCustomerTypes();
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Good good = new Good
+            Customer customer = new Customer
             {
-                GoodName = "",
-                Unit = "",
-                SellPrice = "",
-                InPrice = "",
+               CustomerName ="",
+                Phone = "",
+                Address = "",
+                CustomerType = "",
                 Remarks = "",
                 IsEnabled = 0
             };
-            Window addGoods = new AddGoods(good);
-            addGoods.Show();
-            addGoods.Closed += AddGoods_Closed;
+            Window addCustomers = new AddCustomers(customer);
+            addCustomers.Show();
+            addCustomers.Closed += addCustomers_Closed;
         }
 
-        private void AddGoods_Closed(object sender, EventArgs e)
+        private void addCustomers_Closed(object sender, EventArgs e)
         {
-            Good NewGood = ((AddGoods)sender).WindowGood;
-            if (NewGood != null)
+            Customer NewCustomer = ((AddCustomers)sender).WindowCustomer;
+            if (NewCustomer != null)
             {
-                refreshGoods();
+                refreshCustomers();
             }
 
         }
@@ -162,65 +161,62 @@ namespace 记账.Pages
         private void BtnAction_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            string goodId = button.Uid;
+            string customerId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
+            Customer customer = ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
 
-            Window addGoods = new AddGoods(good);
-            addGoods.Title = "编辑商品";
-            addGoods.Show();
-            addGoods.Closed += AddGoods_Closed;
+            Window addCustomer = new AddCustomers(customer);
+            addCustomer.Title = "编辑联系人";
+            addCustomer.Show();
+            addCustomer.Closed += addCustomers_Closed;
         }
 
         private void Disable_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            string goodId = button.Uid;
+            string customerId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
-            if (good.IsEnabled == 1)
+            Customer customer = ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
+            if (customer.IsEnabled == 1)
             {
-                good.IsEnabled = 0;
+                customer.IsEnabled = 0;
             }
             else {
-                good.IsEnabled = 1;
+                customer.IsEnabled = 1;
             }
-            new GoodService().UpdateGood(good);
+            new CustomerService().UpdateCustomer(customer);
 
-            refreshGoods(goodTypes.SelectedItem.ToString());
+            refreshCustomers(keyword.Text);
         }
-        private void refreshGoods(string goodType=null)
+        private void refreshCustomers(string Customertype = null, string Keyword = null)
         {
-            if (goodType == "全部")
+            if (Customertype == "全部")
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
+                dataList = ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(keyword: Keyword));
 
             }
             else
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
+                dataList = ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(Customertype,Keyword));
 
             }
 
-
-            GoodsGrid.ItemsSource = dataList;
-
-
+            CustomersGrid.ItemsSource = dataList;
           
         }
 
-        private void loadGoodTypes()
+        private void loadCustomerTypes()
         {
-            GoodTypes = new ObservableCollection<string>();
-            GoodTypes.Add("全部");
-            var datat = new GoodService().GetGoodTypes();
+            CustomerTypes = new ObservableCollection<string>();
+            CustomerTypes.Add("全部");
+            var datat = new CustomerService().GetCustomerTypes();
 
             var query = from t in datat.AsEnumerable()
-                        group t by new { t1 = t.Field<string>("goodtype") } into m
+                        group t by new { t1 = t.Field<string>("customertype") } into m
                         select new
                         {
                             goodtype = m.Key.t1,
-                            house = m.First().Field<string>("goodtype"),
+                            house = m.First().Field<string>("customertype"),
                             rowcount = m.Count()
                         };
 
@@ -228,21 +224,28 @@ namespace 记账.Pages
             {
                 if (item.goodtype != null)
                 {
-                    GoodTypes.Add(item.goodtype.ToString());
+                    CustomerTypes.Add(item.goodtype.ToString());
                 }
             }
-            goodTypes.ItemsSource = GoodTypes;
-            if(goodTypes.SelectedIndex < 0)
+            customersTypes.ItemsSource = CustomerTypes;
+            if (customersTypes.SelectedIndex < 0)
             {
-                goodTypes.SelectedIndex = 0;
+                customersTypes.SelectedIndex = 0;
             }
-            
+
         }
 
-        private void goodTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
-            refreshGoods(goodTypes.SelectedItem.ToString());
-            GoodsGrid.ItemsSource = dataList;
+            refreshCustomers(Customertype: customersTypes.SelectedItem.ToString(), Keyword:keyword.Text);
+
+        }
+
+        private void CustomersType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            refreshCustomers(Customertype: customersTypes.SelectedItem.ToString(), Keyword: keyword.Text);
+            CustomersGrid.ItemsSource = dataList;
         }
     }
    

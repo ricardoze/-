@@ -69,6 +69,67 @@ namespace 记账.Service
             return dataTable;
         }
 
-      
+        public DataTable ExecuteKV2Where(string headsql, Dictionary<string, object> equalDic, Dictionary<string, object> likeDic)
+        {
+            StringBuilder stringBuilder = new StringBuilder(headsql);
+            bool firstRecord = true;
+
+
+            if (equalDic.Count > 0 || likeDic.Count > 0)
+            {
+                stringBuilder.Append(" where ");
+            }
+
+            foreach (KeyValuePair<string, object> kv in equalDic)
+            {
+                if (firstRecord)
+                    firstRecord = false;
+                else
+                {
+                    stringBuilder.Append(" and ");
+                }
+
+                stringBuilder.Append(" ");
+                stringBuilder.Append(kv.Key);
+                stringBuilder.Append(" = '");
+                stringBuilder.Append(kv.Value);
+                stringBuilder.Append("' ");
+
+            }
+            firstRecord = true;
+            foreach (KeyValuePair<string, object> kv in likeDic)
+            {
+                if (firstRecord)
+                    firstRecord = false;
+                else
+                {
+                    stringBuilder.Append(" or ");
+                }
+
+                stringBuilder.Append(" ");
+                stringBuilder.Append(kv.Key);
+                stringBuilder.Append(" like '%");
+                stringBuilder.Append(kv.Value);
+                stringBuilder.Append("%' ");
+            }
+
+            stringBuilder.Append(";");
+
+            DataTable dataTable;
+            using (SQLiteConnection conn = connection)
+            {
+                using (SQLiteCommand cmd = new SQLiteCommand())
+                {
+                    cmd.Connection = conn;
+                    connection.Open();
+                    sh = new SQLiteHelper(cmd);
+                    dataTable = sh.Select(stringBuilder.ToString());
+                    connection.Dispose();
+                    // do something...
+                }
+            }
+            return dataTable;
+        }
+
     }
 }

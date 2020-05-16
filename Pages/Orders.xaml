@@ -1,4 +1,4 @@
-﻿<Page x:Class="记账.Pages.Goods"
+﻿<Page x:Class="记账.Pages.Orders"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,9 +18,9 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">添加</Button>
-                <Label VerticalContentAlignment="Center" Foreground="White">商品类型</Label>
-                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="goodTypes" ItemsSource="{Binding GoodTypes}" SelectionChanged="goodTypes_SelectionChanged"></ComboBox>
+                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">下单</Button>
+                <Label VerticalContentAlignment="Center" Foreground="White">客户</Label>
+                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customers" ItemsSource="{Binding Customers}" SelectionChanged="customers_SelectionChanged"></ComboBox>
             </StackPanel>
            
         </Grid>
@@ -29,17 +29,15 @@
                 <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="商品名" Width="80" Binding="{Binding GoodName}"/>
-                        <DataGridTextColumn Header="商品类型" Width="80" Binding="{Binding GoodType}"/>
-                        <DataGridTextColumn Header="单位" Width="80" Binding="{Binding Unit}"/>
-                        <DataGridTextColumn Header="售价" Width="50" Binding="{Binding SellPrice}"/>
-                        <DataGridTextColumn Header="单价" Width="50" Binding="{Binding SinglePrice}"/>
-                        <DataGridTextColumn Width="80" Header="进价" 
-                                        Binding="{Binding InPrice}" />
+                        <DataGridTextColumn Header="客户名" Width="80" Binding="{Binding CustomerName}"/>
+                        <DataGridTextColumn Header="下单时间" Width="80" Binding="{Binding OrderTime}"/>
+                        <DataGridTextColumn Header="商品信息" Width="50" Binding="{Binding OrderDetails}"/>
+                        <DataGridTextColumn Header="商品总数" Width="80" Binding="{Binding GoodCount}"/>
+                        <DataGridTextColumn Header="总价" Width="50" Binding="{Binding TotalPrice}"/>
                         <DataGridTextColumn Header="备注" Width="100" 
                                         Binding="{Binding Remarks}"/>
-                        <DataGridTextColumn Header="使用中" Width="150" 
-                                       Binding="{Binding Path=IsEnabled ,Converter={StaticResource itsc}}" />
+                        <DataGridTextColumn Header="已支付" Width="150" 
+                                       Binding="{Binding Path=IsPayed ,Converter={StaticResource itsc}}" />
                         <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -47,9 +45,9 @@
                                         <Button x:Name="BtnAction" Content="编辑" Height="34"
                                     Width="40" Click="BtnAction_Click" Uid="{Binding Id}"
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                                        </Button>
-                                        <Button x:Name="BtnAction1" Content="{Binding Path=IsEnabled ,Converter={StaticResource stnb}}" Height="34"
-                                    Width="40" Click="Disable_Click" Uid="{Binding Id}"
+                                        </Button> 
+                                        <Button x:Name="BtnAction1"  Height="34"
+                                    Width="40" Click="Disable_Click" Content="删除"
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                     </StackPanel>

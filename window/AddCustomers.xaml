@@ -1,36 +1,30 @@
-﻿<Window x:Class="记账.window.AddGoods"
+﻿<Window x:Class="记账.window.AddCustomers"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:记账.window"
         mc:Ignorable="d"
-        Title="添加商品" Height="480" Width="400">
+        Title="添加商品" Height="380" Width="400">
     <StackPanel HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">商品名</Label>
-            <TextBox Name="GoodName" Text="{Binding GoodName}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>
+            <Label  Width="80px" Height="30px">联系人</Label>
+            <TextBox Name="CustomerName" Text="{Binding CustomerName}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">商品类型</Label>
-            <TextBox Name="GoodType" Text="{Binding GoodType}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>
+            <Label  Width="80px" Height="30px">联系人类型</Label>
+            <TextBox Name="CustomerType" Text="{Binding CustomerType}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>
+        </StackPanel>
+     
+        <StackPanel Orientation="Horizontal" Margin="10px">
+            <Label  Width="80px" Height="30px">手机号码</Label>
+            <TextBox Name="Phone" Text="{Binding Phone}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">单位</Label>
-            <TextBox Name="Unit" Text="{Binding Unit}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>
+            <Label  Width="80px" Height="30px">地址</Label>
+            <TextBox Name="Address" Text="{Binding Address}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">售价</Label>
-            <TextBox Name="SellPrice" Text="{Binding SellPrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">单价</Label>
-            <TextBox Name="SinglePrice" Text="{Binding SinglePrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10px">
-            <Label  Width="80px" Height="30px">进价</Label>
-            <TextBox Name="InPrice" Text="{Binding InPrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px" Height="30px"></TextBox>
-        </StackPanel>
+      
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">备注</Label>
             <TextBox Name="Remarks" Text="{Binding Remarks}" VerticalContentAlignment="Center" Width="200px" Height="30px"></TextBox>

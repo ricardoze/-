@@ -15,4 +15,34 @@
     <Folder Include="SQLiteHelper\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Pages\Customers.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Orders.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="window\AddCustomers.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="window\AddOrder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Pages\Customers.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Orders.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="window\AddCustomers.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="window\AddOrder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

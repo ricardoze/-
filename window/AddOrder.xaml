@@ -1,0 +1,57 @@
+﻿<Window x:Class="记账.window.AddOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:记账.window"
+        xmlns:control="clr-namespace:记账.Control"
+        mc:Ignorable="d"
+        Title="添加商品" Height="480" Width="800">
+    <StackPanel HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Margin="10px">
+            <Label  Width="80px" Height="30px">客户</Label>
+            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customer" ItemsSource="{Binding Customer}"  SelectionChanged="customer_SelectionChanged"></ComboBox>
+            <Label  Width="80px" Height="30px">时间</Label>
+            <control:DateTimePicker x:Name="orderTime" Width="140px" Height="30px"></control:DateTimePicker>
+
+        </StackPanel>
+        <Button>添加商品</Button>
+        
+        <ScrollViewer>
+            <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="商品名" Width="120" Binding="{Binding CustomerName}"/>
+                    <DataGridTextColumn Header="商品原价" Width="80" Binding="{Binding GoodCount}"/>
+                    <DataGridTextColumn Header="商品售价" Width="80" Binding="{Binding TotalPrice}"/>
+                    <DataGridTextColumn Header="商品数量" Width="80" Binding="{Binding TotalPrice}"/>
+                    <DataGridTextColumn Header="备注" Width="100" 
+                                        Binding="{Binding Remarks}"/>
+                  
+                    <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                   
+                                    <Button x:Name="BtnAction1"  Height="34"
+                                    Width="40" Click="Disable_Click" Content="删除"
+                                    FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+        <Grid Margin="10px">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Width="100px" Height="30px" Click="Confirm_Click">确定</Button>
+            <Button Grid.Column="1" Width="100px" Height="30px" Click="Cancel_Click">取消</Button>
+        </Grid>
+        
+    </StackPanel>
+</Window>

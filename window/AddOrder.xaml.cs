@@ -17,22 +17,15 @@ namespace 记账.window
     /// <summary>
     /// AddGoods.xaml 的交互逻辑
     /// </summary>
-    public partial class AddGoods : Window
+    public partial class AddOrder : Window
     {
         private Good windowGood;
 
-        public AddGoods(Good good)
+        public AddOrder(Good good)
         {
             InitializeComponent();
             WindowGood = good;
-            GoodName.DataContext = WindowGood;
-            Unit.DataContext = WindowGood;
-            SellPrice.DataContext = WindowGood;
-            InPrice.DataContext = WindowGood;
-            Remarks.DataContext = WindowGood;
-            IsEnabled.DataContext = WindowGood;
-            SinglePrice.DataContext = WindowGood;
-            GoodType.DataContext = WindowGood;
+           
         }
 
         public Good WindowGood { get => windowGood; set => windowGood = value; }
@@ -58,32 +51,26 @@ namespace 记账.window
         {
             if (string.IsNullOrEmpty(WindowGood.GoodName))
             {
-                GoodName.Text = "商品名不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(WindowGood.Unit))
             {
-                Unit.Text = "单位不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(WindowGood.SellPrice))
             {
-                SellPrice.Text = "售价不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(WindowGood.InPrice) )
             {
-                InPrice.Text = "进价不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(WindowGood.SinglePrice) )
             {
-                SinglePrice.Text = "单价不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(WindowGood.GoodType) )
             {
-                GoodType.Text = "类型不能为空";
                 return;
             }
 
@@ -104,6 +91,16 @@ namespace 记账.window
         {
             WindowGood = null;
             this.Close();
+        }
+
+        private void Disable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

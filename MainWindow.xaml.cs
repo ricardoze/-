@@ -29,14 +29,22 @@ namespace 记账
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int selectedIndex = ((TabControl)sender).SelectedIndex;
-
+            Page page;
             switch (selectedIndex)
             {
                 case 0:
-                    Page page = new Goods();
+                    page = new Goods();
+                    content.Content = page;
+                    break;
+                case 1:
+                    page = new Customers();
                     content.Content = page;
                     break;
             }
+            
+              
+
+
         }
     }
 }
