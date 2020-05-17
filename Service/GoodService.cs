@@ -1,8 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Text;
 using 记账.Model;
 
@@ -28,6 +30,33 @@ namespace 记账.Service
         {
             DataTable dt =  ExecuteQuery("SELECT goodtype FROM Goods;");
             return dt;
+
+        }
+        public ObservableCollection<string> loadGoodTypes()
+        {
+            ObservableCollection<String>  GoodTypes = new ObservableCollection<string>();
+            GoodTypes.Add("全部");
+            var datat = GetGoodTypes();
+
+            var query = from t in datat.AsEnumerable()
+                        group t by new { t1 = t.Field<string>("goodtype") } into m
+                        select new
+                        {
+                            goodtype = m.Key.t1,
+                            house = m.First().Field<string>("goodtype"),
+                            rowcount = m.Count()
+                        };
+
+            foreach (var item in query.ToList())
+            {
+                if (item.goodtype != null)
+                {
+                    GoodTypes.Add(item.goodtype.ToString());
+                }
+            }
+            return GoodTypes;
+          
+
 
         }
 

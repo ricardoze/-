@@ -40,6 +40,10 @@ namespace 记账
                     page = new Customers();
                     content.Content = page;
                     break;
+                case 2:
+                    page = new Orders();
+                    content.Content = page;
+                    break;
             }
             
               

@@ -26,101 +26,7 @@ namespace 记账.Pages
     /// </summary>
     public partial class Goods : Page
     {
-        public ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
-        {
-            Type t = typeof(T);
-            PropertyInfo[] propertys = t.GetProperties();
-            ObservableCollection<T> lst = new ObservableCollection<T>();
-            string typeName = string.Empty;
-            foreach (DataRow dr in dt.Rows)
-            {
-                T entity = new T();
-                foreach (PropertyInfo pi in propertys)
-                {
-                    typeName = pi.Name;
-                    if (dt.Columns.Contains(typeName))
-                    {
-                        if (!pi.CanWrite) continue;
-                        object value = dr[typeName];
-                        if (value == DBNull.Value) continue;
-                        if (pi.PropertyType == typeof(string))
-                        {
-                            pi.SetValue(entity, value.ToString(), null);
-                        }
-                        else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(int?))
-                        {
-                            pi.SetValue(entity, int.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(DateTime?) || pi.PropertyType == typeof(DateTime))
-                        {
-                            pi.SetValue(entity, DateTime.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(float))
-                        {
-                            pi.SetValue(entity, float.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(double))
-                        {
-                            pi.SetValue(entity, double.Parse(value.ToString()), null);
-                        }
-                        else
-                        {
-                            pi.SetValue(entity, value, null);
-                        }
-                    }
-                }
-                lst.Add(entity);
-            }
-            return lst;
-        }
-
-        public T ToObject<T>(DataTable dt) where T : class, new()
-        {
-            Type t = typeof(T);
-            PropertyInfo[] propertys = t.GetProperties();
-            List<T> lst = new List<T>();
-            string typeName = string.Empty;
-            foreach (DataRow dr in dt.Rows)
-            {
-                T entity = new T();
-                foreach (PropertyInfo pi in propertys)
-                {
-                    typeName = pi.Name;
-                    if (dt.Columns.Contains(typeName))
-                    {
-                        if (!pi.CanWrite) continue;
-                        object value = dr[typeName];
-                        if (value == DBNull.Value) continue;
-                        if (pi.PropertyType == typeof(string))
-                        {
-                            pi.SetValue(entity, value.ToString(), null);
-                        }
-                        else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(int?))
-                        {
-                            pi.SetValue(entity, int.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(DateTime?) || pi.PropertyType == typeof(DateTime))
-                        {
-                            pi.SetValue(entity, DateTime.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(float))
-                        {
-                            pi.SetValue(entity, float.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(double))
-                        {
-                            pi.SetValue(entity, double.Parse(value.ToString()), null);
-                        }
-                        else
-                        {
-                            pi.SetValue(entity, value, null);
-                        }
-                    }
-                }
-                lst.Add(entity);
-            }
-            return lst[0];
-        }
+       
 
         ObservableCollection<Good> dataList;
         ObservableCollection<String> GoodTypes;
@@ -135,15 +41,7 @@ namespace 记账.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Good good = new Good
-            {
-                GoodName = "",
-                Unit = "",
-                SellPrice = "",
-                InPrice = "",
-                Remarks = "",
-                IsEnabled = 0
-            };
+            Good good = new Good();
             Window addGoods = new AddGoods(good);
             addGoods.Show();
             addGoods.Closed += AddGoods_Closed;
@@ -164,7 +62,7 @@ namespace 记账.Pages
             Button button = (Button)sender;
             string goodId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
+            Good good = Util.ToObject<Good>(new GoodService().GetGoodById(goodId));
 
             Window addGoods = new AddGoods(good);
             addGoods.Title = "编辑商品";
@@ -177,7 +75,7 @@ namespace 记账.Pages
             Button button = (Button)sender;
             string goodId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
+            Good good = Util.ToObject<Good>(new GoodService().GetGoodById(goodId));
             if (good.IsEnabled == 1)
             {
                 good.IsEnabled = 0;
@@ -193,12 +91,12 @@ namespace 记账.Pages
         {
             if (goodType == "全部")
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
+                dataList = Util.ToObservableCollection<Good>(new GoodService().GetGoods());
 
             }
             else
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
+                dataList = Util.ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
 
             }
 
@@ -211,26 +109,8 @@ namespace 记账.Pages
 
         private void loadGoodTypes()
         {
-            GoodTypes = new ObservableCollection<string>();
-            GoodTypes.Add("全部");
-            var datat = new GoodService().GetGoodTypes();
+            GoodTypes = new GoodService().loadGoodTypes();
 
-            var query = from t in datat.AsEnumerable()
-                        group t by new { t1 = t.Field<string>("goodtype") } into m
-                        select new
-                        {
-                            goodtype = m.Key.t1,
-                            house = m.First().Field<string>("goodtype"),
-                            rowcount = m.Count()
-                        };
-
-            foreach (var item in query.ToList())
-            {
-                if (item.goodtype != null)
-                {
-                    GoodTypes.Add(item.goodtype.ToString());
-                }
-            }
             goodTypes.ItemsSource = GoodTypes;
             if(goodTypes.SelectedIndex < 0)
             {

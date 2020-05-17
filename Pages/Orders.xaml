@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">下单</Button>
+                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="AddOrder_Click">下单</Button>
                 <Label VerticalContentAlignment="Center" Foreground="White">客户</Label>
                 <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customers" ItemsSource="{Binding Customers}" SelectionChanged="customers_SelectionChanged"></ComboBox>
             </StackPanel>

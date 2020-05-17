@@ -2,31 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using 记账.Model;
-using 记账.Service;
-using 记账.window;
 
-namespace 记账.Pages
+namespace 记账
 {
-    /// <summary>
-    /// Page1.xaml 的交互逻辑
-    /// </summary>
-    public partial class Orders : Page
+    public class Util
     {
-        public ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
+        public static ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
         {
             Type t = typeof(T);
             PropertyInfo[] propertys = t.GetProperties();
@@ -74,7 +57,7 @@ namespace 记账.Pages
             return lst;
         }
 
-        public T ToObject<T>(DataTable dt) where T : class, new()
+        public static T ToObject<T>(DataTable dt) where T : class, new()
         {
             Type t = typeof(T);
             PropertyInfo[] propertys = t.GetProperties();
@@ -121,125 +104,5 @@ namespace 记账.Pages
             }
             return lst[0];
         }
-
-        ObservableCollection<Good> dataList;
-        ObservableCollection<String> GoodTypes;
-        public Orders()
-        {
-            InitializeComponent();
-            loadGoodTypes();
-            refreshGoods("全部");
-
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Order order = new Order();
-        }
-
-        private void AddGoods_Closed(object sender, EventArgs e)
-        {
-            Good NewGood = ((AddGoods)sender).WindowGood;
-            if (NewGood != null)
-            {
-                refreshGoods();
-            }
-
-        }
-
-        private void BtnAction_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            string goodId = button.Uid;
-
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
-
-            Window addGoods = new AddGoods(good);
-            addGoods.Title = "编辑商品";
-            addGoods.Show();
-            addGoods.Closed += AddGoods_Closed;
-        }
-
-        private void Disable_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            string goodId = button.Uid;
-
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
-            if (good.IsEnabled == 1)
-            {
-                good.IsEnabled = 0;
-            }
-            else {
-                good.IsEnabled = 1;
-            }
-            new GoodService().UpdateGood(good);
-
-        }
-        private void refreshGoods(string goodType=null)
-        {
-            if (goodType == "全部")
-            {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
-
-            }
-            else
-            {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
-
-            }
-
-
-            GoodsGrid.ItemsSource = dataList;
-
-
-          
-        }
-
-        private void loadGoodTypes()
-        {
-            GoodTypes = new ObservableCollection<string>();
-            GoodTypes.Add("全部");
-            var datat = new GoodService().GetGoodTypes();
-
-            var query = from t in datat.AsEnumerable()
-                        group t by new { t1 = t.Field<string>("goodtype") } into m
-                        select new
-                        {
-                            goodtype = m.Key.t1,
-                            house = m.First().Field<string>("goodtype"),
-                            rowcount = m.Count()
-                        };
-
-            foreach (var item in query.ToList())
-            {
-                if (item.goodtype != null)
-                {
-                    GoodTypes.Add(item.goodtype.ToString());
-                }
-            }
-            
-            
-        }
-
-        private void goodTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            GoodsGrid.ItemsSource = dataList;
-        }
-
-        private void customers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void AddOrder_Click(object sender, RoutedEventArgs e)
-        {
-            Order order = new Order();
-            Window addOrder = new AddOrder(order);
-            addOrder.ShowDialog();
-            addOrder.Closed += AddGoods_Closed;
-        }
     }
-   
 }

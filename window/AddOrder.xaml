@@ -15,7 +15,7 @@
             <control:DateTimePicker x:Name="orderTime" Width="140px" Height="30px"></control:DateTimePicker>
 
         </StackPanel>
-        <Button>添加商品</Button>
+        <Button Click="AddGood_Click">添加商品</Button>
         
         <ScrollViewer>
             <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">

@@ -19,16 +19,16 @@ namespace 记账.window
     /// </summary>
     public partial class AddOrder : Window
     {
-        private Good windowGood;
+        private Order windowOrder;
 
-        public AddOrder(Good good)
+        public AddOrder(Order order)
         {
             InitializeComponent();
-            WindowGood = good;
+            windowOrder = order;
            
         }
 
-        public Good WindowGood { get => windowGood; set => windowGood = value; }
+        public Order WindowOrder { get => windowOrder; set => windowOrder = value; }
 
         private void NumberBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -49,47 +49,13 @@ namespace 记账.window
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(WindowGood.GoodName))
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(WindowGood.Unit))
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(WindowGood.SellPrice))
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(WindowGood.InPrice) )
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(WindowGood.SinglePrice) )
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(WindowGood.GoodType) )
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(WindowGood.Id))
-            {
-                WindowGood.Id = Guid.NewGuid().ToString();
-                new GoodService().AddGood(WindowGood);
-            }
-            else
-            {
-                new GoodService().UpdateGood(WindowGood);
-            }
-           
+        
             this.Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            WindowGood = null;
+            WindowOrder = null;
             this.Close();
         }
 
@@ -100,6 +66,16 @@ namespace 记账.window
 
         private void customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+        }
+
+     
+
+        private void AddGood_Click(object sender, RoutedEventArgs e)
+        {
+            GoodSelect goodSelect = new GoodSelect();
+            goodSelect.ShowDialog();
+
 
         }
     }
