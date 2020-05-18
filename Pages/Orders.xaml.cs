@@ -122,13 +122,13 @@ namespace 记账.Pages
             return lst[0];
         }
 
-        ObservableCollection<Good> dataList;
-        ObservableCollection<String> GoodTypes;
+        ObservableCollection<Order> dataList;
+        ObservableCollection<String> orderTypes;
         public Orders()
         {
             InitializeComponent();
-            loadGoodTypes();
-            refreshGoods("全部");
+            loadorderTypes();
+            refreshorders("全部");
 
 
         }
@@ -138,94 +138,91 @@ namespace 记账.Pages
             Order order = new Order();
         }
 
-        private void AddGoods_Closed(object sender, EventArgs e)
+        private void Addorders_Closed(object sender, EventArgs e)
         {
-            Good NewGood = ((AddGoods)sender).WindowGood;
-            if (NewGood != null)
-            {
-                refreshGoods();
-            }
+            Order Neworder = ((AddOrder)sender).WindowOrder;
+           
+            refreshorders();
 
         }
 
         private void BtnAction_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            string goodId = button.Uid;
+            string orderId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
+            Order order = ToObject<Order>(new OrderService().GetOrderById(orderId));
 
-            Window addGoods = new AddGoods(good);
-            addGoods.Title = "编辑商品";
-            addGoods.Show();
-            addGoods.Closed += AddGoods_Closed;
+            Window addorders = new AddOrder(order);
+            addorders.Title = "编辑商品";
+            addorders.Show();
+            addorders.Closed += Addorders_Closed;
         }
 
         private void Disable_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            string goodId = button.Uid;
+            string orderId = button.Uid;
 
-            Good good = ToObject<Good>(new GoodService().GetGoodById(goodId));
-            if (good.IsEnabled == 1)
+            Order order = ToObject<Order>(new OrderService().GetOrderById(orderId));
+            if (order!=null)
             {
-                good.IsEnabled = 0;
+                new OrderService().DeleteOrder(order);
+
             }
-            else {
-                good.IsEnabled = 1;
-            }
-            new GoodService().UpdateGood(good);
+
 
         }
-        private void refreshGoods(string goodType=null)
+        private void refreshorders(string orderType=null)
         {
-            if (goodType == "全部")
+            if (orderType == "全部" || string.IsNullOrEmpty(orderType))
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoods());
+                dataList = ToObservableCollection<Order>(new OrderService().GetOrders());
 
             }
             else
             {
-                dataList = ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
+                dataList = ToObservableCollection<Order>(new OrderService().GetOrdersByType(orderType));
 
             }
+           
 
 
-            GoodsGrid.ItemsSource = dataList;
+            OrdersGrid.ItemsSource = dataList;
 
 
           
         }
 
-        private void loadGoodTypes()
+        private void loadorderTypes()
         {
-            GoodTypes = new ObservableCollection<string>();
-            GoodTypes.Add("全部");
-            var datat = new GoodService().GetGoodTypes();
+            orderTypes = new ObservableCollection<string>();
+            orderTypes.Add("全部");
+            var datat = new OrderService().GetOrderTypes();
 
             var query = from t in datat.AsEnumerable()
-                        group t by new { t1 = t.Field<string>("goodtype") } into m
+                        group t by new { t1 = t.Field<string>("ordertype") } into m
                         select new
                         {
-                            goodtype = m.Key.t1,
-                            house = m.First().Field<string>("goodtype"),
+                            ordertype = m.Key.t1,
+                            house = m.First().Field<string>("ordertype"),
                             rowcount = m.Count()
                         };
 
             foreach (var item in query.ToList())
             {
-                if (item.goodtype != null)
+                if (item.ordertype != null)
                 {
-                    GoodTypes.Add(item.goodtype.ToString());
+                    orderTypes.Add(item.ordertype.ToString());
                 }
             }
             
             
         }
 
-        private void goodTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void orderTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            GoodsGrid.ItemsSource = dataList;
+            OrdersGrid.ItemsSource = dataList;
         }
 
         private void customers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -238,7 +235,7 @@ namespace 记账.Pages
             Order order = new Order();
             Window addOrder = new AddOrder(order);
             addOrder.ShowDialog();
-            addOrder.Closed += AddGoods_Closed;
+            addOrder.Closed += Addorders_Closed;
         }
     }
    

@@ -42,15 +42,23 @@ namespace 记账.window
             //屏蔽非法按键
             if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
             {
-                e.Handled = false;
+                e.Handled = true;
             }
             else if ((e.Key >= Key.D0 && e.Key <= Key.D9))
             {
-                e.Handled = false;
+                e.Handled = true;
+            }
+            else if ((e.Key == Key.Back  || e.Key == Key.Delete))
+            {
+                e.Handled = true;
+            } 
+            else if ((e.Key == Key.Left  || e.Key == Key.Right))
+            {
+                e.Handled = true;
             }
             else
             {
-                e.Handled = true;
+                e.Handled = false;
             }
         }
 

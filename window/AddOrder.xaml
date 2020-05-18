@@ -10,7 +10,7 @@
     <StackPanel HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">客户</Label>
-            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customer" ItemsSource="{Binding Customer}"  SelectionChanged="customer_SelectionChanged"></ComboBox>
+            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customers" ItemsSource="{Binding Customer}"  SelectionChanged="customer_SelectionChanged"></ComboBox>
             <Label  Width="80px" Height="30px">时间</Label>
             <control:DateTimePicker x:Name="orderTime" Width="140px" Height="30px"></control:DateTimePicker>
 

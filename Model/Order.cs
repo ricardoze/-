@@ -13,6 +13,7 @@ namespace 记账.Model
        
         public string Remarks { get; set; }
         public int IsPayed { get; set; }
+        public int IsShowed { get; set; }
         public string OrderType { get; set; }
     }
 }

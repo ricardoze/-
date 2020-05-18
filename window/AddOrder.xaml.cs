@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,6 +49,28 @@ namespace 记账.window
                 e.Handled = true;
             }
         }
+        Dictionary<string, string> Customers;
+
+        private void loadCustomerTypes()
+        {
+            Customers = new Dictionary<string, string>();
+            var datat = new CustomerService().GetCustomers();
+
+          /*  foreach (var item in datat.AsEnumerable())
+            {
+                if (item.goodtype != null)
+                {
+                    Customers.Add(item.goodtype.ToString());
+                }
+            }*/
+            customers.ItemsSource = Customers;
+            if (customers.SelectedIndex < 0)
+            {
+                customers.SelectedIndex = 0;
+            }
+
+        }
+
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {

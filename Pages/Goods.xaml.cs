@@ -49,11 +49,11 @@ namespace 记账.Pages
 
         private void AddGoods_Closed(object sender, EventArgs e)
         {
+
+            //TODO:刷新逻辑有问题
             Good NewGood = ((AddGoods)sender).WindowGood;
-            if (NewGood != null)
-            {
-                refreshGoods();
-            }
+          
+            refreshGoods();
 
         }
 
@@ -89,12 +89,12 @@ namespace 记账.Pages
         }
         private void refreshGoods(string goodType=null)
         {
-            if (goodType == "全部")
+            if (goodType == "全部" || string.IsNullOrEmpty(goodType))
             {
                 dataList = Util.ToObservableCollection<Good>(new GoodService().GetGoods());
 
             }
-            else
+            else 
             {
                 dataList = Util.ToObservableCollection<Good>(new GoodService().GetGoodsByType(goodType));
 

@@ -21,15 +21,15 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">售价</Label>
-            <TextBox Name="SellPrice" Text="{Binding SellPrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
+            <TextBox Name="SellPrice" Text="{Binding SellPrice}" VerticalContentAlignment="Center" PreviewKeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">单价</Label>
-            <TextBox Name="SinglePrice" Text="{Binding SinglePrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
+            <TextBox Name="SinglePrice" Text="{Binding SinglePrice}" VerticalContentAlignment="Center" PreviewKeyDown="NumberBox_KeyDown" Width="200px"  Height="30px"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">进价</Label>
-            <TextBox Name="InPrice" Text="{Binding InPrice}" VerticalContentAlignment="Center" KeyDown="NumberBox_KeyDown" Width="200px" Height="30px"></TextBox>
+            <TextBox Name="InPrice" Text="{Binding InPrice}" VerticalContentAlignment="Center" PreviewKeyDown="NumberBox_KeyDown" Width="200px" Height="30px"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">备注</Label>

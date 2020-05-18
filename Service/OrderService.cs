@@ -14,21 +14,21 @@ namespace 记账.Service
     {
         public DataTable GetOrders()
         {
-            DataTable dt =  ExecuteQuery("select * from Orders order by id;");
+            DataTable dt =  ExecuteQuery("select * from Orders where IsShowed=1 order by id;");
             return dt;
 
         }
 
         public DataTable GetOrdersByType(string Ordertype)
         {
-            DataTable dt =  ExecuteQuery("select * from Orders where Ordertype = '"+ Ordertype + "'order by id;");
+            DataTable dt =  ExecuteQuery("select * from Orders where IsShowed=1 Ordertype = '" + Ordertype + "'order by id;");
             return dt;
 
         }
 
         public DataTable GetOrderTypes()
         {
-            DataTable dt =  ExecuteQuery("SELECT Ordertype FROM Orders;");
+            DataTable dt =  ExecuteQuery("SELECT Ordertype FROM Orders where IsShowed=1;");
             return dt;
 
         }
@@ -62,22 +62,28 @@ namespace 记账.Service
 
         public DataTable GetOrderById(string id)
         {
-            DataTable dt =  ExecuteQuery("select * from Orders where id = '" +id+"';");
+            DataTable dt =  ExecuteQuery("select * from Orders where IsShowed=1 and id = '" + id+"';");
             return dt;
 
         }
 
         public void AddOrder(Order Order)
         {
-             ExecuteNonQuery("INSERT INTO Order('Id', 'OrderTime', 'customerId', 'Remarks', 'IsPayed', 'OrderType', 'TotalPrice') VALUES ('"+Order.Id+ "', '" + Order.OrderTime.Date + "', '" 
-                 + Order.CustomerId + "', '" + Order.Remarks + "', " + Order.IsPayed + ", '" + Order.OrderType + "', '" + Order.TotalPrice + "');");
+             ExecuteNonQuery("INSERT INTO Orders('Id', 'OrderTime', 'customerId', 'Remarks', 'IsPayed', 'OrderType', 'TotalPrice','IsShowed') VALUES ('" + Order.Id+ "', '" + Order.OrderTime.Date + "', '" 
+                 + Order.CustomerId + "', '" + Order.Remarks + "', " + Order.IsPayed + ", '" + Order.OrderType + "', '" + Order.TotalPrice + "',1);");
 
         }
 
         public void UpdateOrder(Order Order)
         {
-             ExecuteNonQuery("UPDATE Order SET 'OrderTime' = '" + Order.OrderTime.Date + "', 'customerId' = '"
+             ExecuteNonQuery("UPDATE Orders SET 'OrderTime' = '" + Order.OrderTime.Date + "', 'customerId' = '"
                  + Order.CustomerId + "', 'Remarks' = '" + Order.Remarks + "', 'IsPayed' =" + Order.IsPayed + ", 'OrderType' = '" + Order.OrderType + "', 'TotalPrice' = '" + Order.TotalPrice + "' WHERE Id = '" + Order.Id + "';");
+
+        }
+
+        public void DeleteOrder(Order Order)
+        {
+            ExecuteNonQuery("UPDATE Orders SET IsShowed = 0 WHERE Id = '" + Order.Id + "';");
 
         }
     }

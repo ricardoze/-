@@ -26,104 +26,10 @@ namespace 记账.Pages
     /// </summary>
     public partial class Customers : Page
     {
-        public ObservableCollection<T> ToObservableCollection<T>(DataTable dt) where T : class, new()
-        {
-            Type t = typeof(T);
-            PropertyInfo[] propertys = t.GetProperties();
-            ObservableCollection<T> lst = new ObservableCollection<T>();
-            string typeName = string.Empty;
-            foreach (DataRow dr in dt.Rows)
-            {
-                T entity = new T();
-                foreach (PropertyInfo pi in propertys)
-                {
-                    typeName = pi.Name;
-                    if (dt.Columns.Contains(typeName))
-                    {
-                        if (!pi.CanWrite) continue;
-                        object value = dr[typeName];
-                        if (value == DBNull.Value) continue;
-                        if (pi.PropertyType == typeof(string))
-                        {
-                            pi.SetValue(entity, value.ToString(), null);
-                        }
-                        else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(int?))
-                        {
-                            pi.SetValue(entity, int.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(DateTime?) || pi.PropertyType == typeof(DateTime))
-                        {
-                            pi.SetValue(entity, DateTime.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(float))
-                        {
-                            pi.SetValue(entity, float.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(double))
-                        {
-                            pi.SetValue(entity, double.Parse(value.ToString()), null);
-                        }
-                        else
-                        {
-                            pi.SetValue(entity, value, null);
-                        }
-                    }
-                }
-                lst.Add(entity);
-            }
-            return lst;
-        }
-
-        public T ToObject<T>(DataTable dt) where T : class, new()
-        {
-            Type t = typeof(T);
-            PropertyInfo[] propertys = t.GetProperties();
-            List<T> lst = new List<T>();
-            string typeName = string.Empty;
-            foreach (DataRow dr in dt.Rows)
-            {
-                T entity = new T();
-                foreach (PropertyInfo pi in propertys)
-                {
-                    typeName = pi.Name;
-                    if (dt.Columns.Contains(typeName))
-                    {
-                        if (!pi.CanWrite) continue;
-                        object value = dr[typeName];
-                        if (value == DBNull.Value) continue;
-                        if (pi.PropertyType == typeof(string))
-                        {
-                            pi.SetValue(entity, value.ToString(), null);
-                        }
-                        else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(int?))
-                        {
-                            pi.SetValue(entity, int.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(DateTime?) || pi.PropertyType == typeof(DateTime))
-                        {
-                            pi.SetValue(entity, DateTime.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(float))
-                        {
-                            pi.SetValue(entity, float.Parse(value.ToString()), null);
-                        }
-                        else if (pi.PropertyType == typeof(double))
-                        {
-                            pi.SetValue(entity, double.Parse(value.ToString()), null);
-                        }
-                        else
-                        {
-                            pi.SetValue(entity, value, null);
-                        }
-                    }
-                }
-                lst.Add(entity);
-            }
-            return lst[0];
-        }
+       
 
         ObservableCollection<Customer> dataList;
-        ObservableCollection<String> CustomerTypes;
+        ObservableCollection<string> CustomerTypes;
         public Customers()
         {
             InitializeComponent();
@@ -151,10 +57,8 @@ namespace 记账.Pages
         private void addCustomers_Closed(object sender, EventArgs e)
         {
             Customer NewCustomer = ((AddCustomers)sender).WindowCustomer;
-            if (NewCustomer != null)
-            {
-                refreshCustomers();
-            }
+           
+            refreshCustomers();
 
         }
 
@@ -163,7 +67,7 @@ namespace 记账.Pages
             Button button = (Button)sender;
             string customerId = button.Uid;
 
-            Customer customer = ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
+            Customer customer = Util.ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
 
             Window addCustomer = new AddCustomers(customer);
             addCustomer.Title = "编辑联系人";
@@ -176,7 +80,7 @@ namespace 记账.Pages
             Button button = (Button)sender;
             string customerId = button.Uid;
 
-            Customer customer = ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
+            Customer customer = Util.ToObject<Customer>(new CustomerService().GetCustomerById(customerId));
             if (customer.IsEnabled == 1)
             {
                 customer.IsEnabled = 0;
@@ -190,17 +94,17 @@ namespace 记账.Pages
         }
         private void refreshCustomers(string Customertype = null, string Keyword = null)
         {
-            if (Customertype == "全部")
+            if (Customertype == "全部" ||(string.IsNullOrEmpty(Customertype)&& string.IsNullOrEmpty(Keyword)))
             {
-                dataList = ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(keyword: Keyword));
+                dataList = Util.ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(keyword: Keyword));
 
             }
             else
             {
-                dataList = ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(Customertype,Keyword));
+                dataList = Util.ToObservableCollection<Customer>(new CustomerService().GetCustomersByTypeAndKeyword(Customertype,Keyword));
 
             }
-
+           
             CustomersGrid.ItemsSource = dataList;
           
         }
@@ -211,27 +115,7 @@ namespace 记账.Pages
             CustomerTypes.Add("全部");
             var datat = new CustomerService().GetCustomerTypes();
 
-            var query = from t in datat.AsEnumerable()
-                        group t by new { t1 = t.Field<string>("customertype") } into m
-                        select new
-                        {
-                            goodtype = m.Key.t1,
-                            house = m.First().Field<string>("customertype"),
-                            rowcount = m.Count()
-                        };
-
-            foreach (var item in query.ToList())
-            {
-                if (item.goodtype != null)
-                {
-                    CustomerTypes.Add(item.goodtype.ToString());
-                }
-            }
-            customersTypes.ItemsSource = CustomerTypes;
-            if (customersTypes.SelectedIndex < 0)
-            {
-                customersTypes.SelectedIndex = 0;
-            }
+          
 
         }
 
