@@ -4,32 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:记账.window"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:domain11="clr-namespace:记账.Pages"
         mc:Ignorable="d"
-        Title="GoodSelect" Height="450" Width="300">
+        Title="GoodSelect" Height="450" Width="500" Cursor="Hand">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="9*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Label VerticalContentAlignment="Center" Foreground="Black">商品类型</Label>
-            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="goodTypes" ItemsSource="{Binding GoodTypes}" SelectionChanged="goodTypes_SelectionChanged"></ComboBox>
+            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Margin="10,0"  Width="120px" Height="30px" Name="goodTypes" ItemsSource="{Binding GoodTypes}" SelectionChanged="goodTypes_SelectionChanged"></ComboBox>
         </StackPanel>
     <ScrollViewer Grid.Row="1">
-        <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False"  CanUserAddRows="False">
+            <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False"  CanUserAddRows="False" SelectionChanged="GoodsGrid_SelectionChanged" MouseDoubleClick="datagrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="商品类型" Width="130" Binding="{Binding GoodType}"/>
                 <DataGridTextColumn Header="商品名" Width="150" Binding="{Binding GoodName}"/>
+                    <DataGridTextColumn Header="单价" Width="150" Binding="{Binding SellPrice}"/>
             </DataGrid.Columns>
         </DataGrid>
     </ScrollViewer>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <materialDesign:Snackbar  Grid.Row="2" 
+          MessageQueue="{materialDesign:MessageQueue}"
+          x:Name="SnackbarSeven" />
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label VerticalAlignment="Center">数量</Label>
-            <TextBox Width="60" Height="30"></TextBox>
-            <Button Margin="60,0,0,0" Width="60" Height="30">确定</Button>
-            <Button Margin="8,0" Width="60" Height="30" >关闭</Button>
+            <ComboBox Name="numberBox"
+  materialDesign:HintAssist.Hint="请选择数量"  Height="30"
+  MinWidth="72"
+>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+            <Button Margin="140,0,0,0" Width="80" Height="30" Click="finishclick">确定</Button>
+            <Button Margin="38,0" Width="80" Height="30" HorizontalAlignment="Right" Click="closeclick">关闭</Button>
         </StackPanel>
+       
     </Grid>
 </Window>

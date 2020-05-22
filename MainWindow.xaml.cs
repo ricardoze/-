@@ -24,29 +24,39 @@ namespace 记账
         public MainWindow()
         {
             InitializeComponent();
+            firstRatio.IsChecked = true;
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int selectedIndex = ((TabControl)sender).SelectedIndex;
+         
+
+
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            string selectedIndex = ((RadioButton)sender).Uid;
+            if (contentFrame == null)
+            {
+                contentFrame = new Frame();
+            }
             Page page;
             switch (selectedIndex)
             {
-                case 0:
+                case "1":
                     page = new Goods();
-                    content.Content = page;
+                    contentFrame.Content = page;
                     break;
-                case 1:
+                case "2":
                     page = new Customers();
-                    content.Content = page;
+                    contentFrame.Content = page;
                     break;
-                case 2:
+                case "3":
                     page = new Orders();
-                    content.Content = page;
+                    contentFrame.Content = page;
                     break;
             }
-            
-              
 
 
         }

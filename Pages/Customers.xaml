@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:记账.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+        d:DesignHeight="650" d:DesignWidth="1200"
       Title="Page1">
     <Page.Resources>
         <local:StateToNullableBoolConverter x:Key="stnb"/>
@@ -18,41 +18,40 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">添加</Button>
-                <Label VerticalContentAlignment="Center" Foreground="White">类型</Label>
-                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customersTypes" ItemsSource="{Binding CustomersTypes}" SelectionChanged="CustomersType_SelectionChanged"></ComboBox>
+                <Button HorizontalAlignment="Left" Width="80px" Height="30px" Click="Button_Click" Cursor="Hand" Margin="10,0">添加</Button>
+                <Label VerticalContentAlignment="Center" Foreground="White" Margin="10,0">类型</Label>
+                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="120px" Height="30px" Name="customersTypes" Margin="10,0" ItemsSource="{Binding CustomersTypes}" SelectionChanged="CustomersType_SelectionChanged"></ComboBox>
 
-                <Label VerticalContentAlignment="Center" Foreground="White">关键字</Label>
-                <TextBox HorizontalAlignment="Left" Width="120px" Height="20px" Name="keyword" ></TextBox>
-                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Search_Click">搜索</Button>
+                <Label VerticalContentAlignment="Center" Foreground="White" Margin="10,0">关键字</Label>
+                <TextBox HorizontalAlignment="Left" Width="120px" Height="30px" Name="keyword" Margin="10,0" ></TextBox>
+                <Button HorizontalAlignment="Left" Width="80px" Height="30px" Click="Search_Click" Margin="10,0">搜索</Button>
 
             </StackPanel>
            
         </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer>
-                <DataGrid x:Name="CustomersGrid" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid x:Name="CustomersGrid" AutoGenerateColumns="False" CanUserAddRows="False" VerticalContentAlignment="Center">
                     <DataGrid.Columns>
                         <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="联系人" Width="80" Binding="{Binding CustomerName}"/>
+                        <DataGridTextColumn Header="联系人" Width="120" Binding="{Binding CustomerName}"/>
                         <DataGridTextColumn Header="手机号" Width="120" Binding="{Binding Phone}"/>
-                        <DataGridTextColumn Header="地址" Width="140" Binding="{Binding Address}"/>
-                        <DataGridTextColumn Header="备注" Width="80" Binding="{Binding SellPrice}"/>
-                        <DataGridTextColumn Header="类型" Width="50" Binding="{Binding CustomerType}"/>
-                        <DataGridTextColumn Header="备注" Width="100" 
+                        <DataGridTextColumn Header="地址" Width="*" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="类型" Width="80" Binding="{Binding CustomerType}"/>
+                        <DataGridTextColumn Header="备注" Width="120" 
                                         Binding="{Binding Remarks}"/>
                         <DataGridTextColumn Header="使用中" Width="80" 
                                        Binding="{Binding Path=IsEnabled ,Converter={StaticResource itsc}}" />
-                        <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="100">
+                        <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="260" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button x:Name="BtnAction" Content="编辑" Height="34"
-                                    Width="40" Click="BtnAction_Click" Uid="{Binding Id}"
+                                    Width="80px" Click="BtnAction_Click" Uid="{Binding Id}"
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                         <Button x:Name="BtnAction1" Content="{Binding Path=IsEnabled ,Converter={StaticResource stnb}}" Height="34"
-                                    Width="40" Click="Disable_Click" Uid="{Binding Id}"
+                                    Width="80px" Click="Disable_Click" Uid="{Binding Id}" Margin="10,0"
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                     </StackPanel>

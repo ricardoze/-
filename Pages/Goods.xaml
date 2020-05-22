@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:记账.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+           d:DesignHeight="650" d:DesignWidth="1200"
       Title="Page1">
     <Page.Resources>
         <local:StateToNullableBoolConverter x:Key="stnb"/>
@@ -18,9 +18,9 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Left" Width="60px" Height="20px" Click="Button_Click">添加</Button>
-                <Label VerticalContentAlignment="Center" Foreground="White">商品类型</Label>
-                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="goodTypes" ItemsSource="{Binding GoodTypes}" SelectionChanged="goodTypes_SelectionChanged"></ComboBox>
+                <Button HorizontalAlignment="Left" Width="80px" Height="30px" Margin="10,0" Click="Button_Click">添加</Button>
+                <Label VerticalContentAlignment="Center" Foreground="White" Margin="10,0">商品类型</Label>
+                <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Margin="10,0"  Width="120px" Height="30px" Name="goodTypes" ItemsSource="{Binding GoodTypes}" SelectionChanged="goodTypes_SelectionChanged"></ComboBox>
             </StackPanel>
            
         </Grid>
@@ -29,27 +29,27 @@
                 <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="商品名" Width="80" Binding="{Binding GoodName}"/>
-                        <DataGridTextColumn Header="商品类型" Width="80" Binding="{Binding GoodType}"/>
+                        <DataGridTextColumn Header="商品名" Width="140" Binding="{Binding GoodName}"/>
+                        <DataGridTextColumn Header="商品类型" Width="120" Binding="{Binding GoodType}"/>
                         <DataGridTextColumn Header="单位" Width="80" Binding="{Binding Unit}"/>
-                        <DataGridTextColumn Header="售价" Width="50" Binding="{Binding SellPrice}"/>
-                        <DataGridTextColumn Header="单价" Width="50" Binding="{Binding SinglePrice}"/>
+                        <DataGridTextColumn Header="售价" Width="100" Binding="{Binding SellPrice}"/>
+                        <DataGridTextColumn Header="单价" Width="100" Binding="{Binding SinglePrice}"/>
                         <DataGridTextColumn Width="80" Header="进价" 
                                         Binding="{Binding InPrice}" />
-                        <DataGridTextColumn Header="备注" Width="100" 
+                        <DataGridTextColumn Header="备注" Width="140" 
                                         Binding="{Binding Remarks}"/>
                         <DataGridTextColumn Header="使用中" Width="150" 
                                        Binding="{Binding Path=IsEnabled ,Converter={StaticResource itsc}}" />
-                        <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="100">
+                        <DataGridTemplateColumn x:Name="UserAction" Header="操作" Width="260">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button x:Name="BtnAction" Content="编辑" Height="34"
-                                    Width="40" Click="BtnAction_Click" Uid="{Binding Id}"
+                                    Width="80px" Click="BtnAction_Click" Uid="{Binding Id}" 
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                         <Button x:Name="BtnAction1" Content="{Binding Path=IsEnabled ,Converter={StaticResource stnb}}" Height="34"
-                                    Width="40" Click="Disable_Click" Uid="{Binding Id}"
+                                    Width="80px" Click="Disable_Click" Uid="{Binding Id}" Margin="10,0"
                                     FontSize="16"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                         </Button>
                                     </StackPanel>

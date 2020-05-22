@@ -1,4 +1,8 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -28,7 +32,8 @@ namespace 记账.window
         {
             InitializeComponent();
             windowOrder = order;
-           
+            var lang = System.Windows.Markup.XmlLanguage.GetLanguage("zh-CN");
+            LocaleDatePicker.Language = lang;
         }
 
         public Order WindowOrder { get => windowOrder; set => windowOrder = value; }
@@ -56,13 +61,13 @@ namespace 记账.window
             Customers = new Dictionary<string, string>();
             var datat = new CustomerService().GetCustomers();
 
-          /*  foreach (var item in datat.AsEnumerable())
-            {
-                if (item.goodtype != null)
-                {
-                    Customers.Add(item.goodtype.ToString());
-                }
-            }*/
+            /*  foreach (var item in datat.AsEnumerable())
+              {
+                  if (item.goodtype != null)
+                  {
+                      Customers.Add(item.goodtype.ToString());
+                  }
+              }*/
             customers.ItemsSource = Customers;
             if (customers.SelectedIndex < 0)
             {
@@ -74,7 +79,7 @@ namespace 记账.window
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-        
+
             this.Close();
         }
 
@@ -94,14 +99,31 @@ namespace 记账.window
 
         }
 
-     
+
 
         private void AddGood_Click(object sender, RoutedEventArgs e)
         {
             GoodSelect goodSelect = new GoodSelect();
             goodSelect.ShowDialog();
+            goodSelect.Closed += GoodSelect_Closed; ;
 
 
+        }
+
+        private void GoodSelect_Closed(object sender, EventArgs e)
+        {
+            GoodSelect goodSelect = (GoodSelect)sender;
+            OrderDetail orderDetail = goodSelect.detail;
+
+
+        }
+
+        private void PresetTimePicker_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            var oldValue = e.OldValue.HasValue ? e.OldValue.Value.ToLongTimeString() : "NULL";
+            var newValue = e.NewValue.HasValue ? e.NewValue.Value.ToLongTimeString() : "NULL";
+
+            Debug.WriteLine($"PresentTimePicker's SelectedTime changed from {oldValue} to {newValue}");
         }
     }
 }

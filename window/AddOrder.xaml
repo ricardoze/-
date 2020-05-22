@@ -3,21 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:记账.window"
         xmlns:control="clr-namespace:记账.Control"
         mc:Ignorable="d"
-        Title="添加商品" Height="480" Width="800">
-    <StackPanel HorizontalAlignment="Center">
-        <StackPanel Orientation="Horizontal" Margin="10px">
+        Title="添加商品" Height="580" Width="700">
+    <Grid HorizontalAlignment="Center" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10px">
             <Label  Width="80px" Height="30px">客户</Label>
-            <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Width="80px" Height="20px" Name="customers" ItemsSource="{Binding Customer}"  SelectionChanged="customer_SelectionChanged"></ComboBox>
-            <Label  Width="80px" Height="30px">时间</Label>
-            <control:DateTimePicker x:Name="orderTime" Width="140px" Height="30px"></control:DateTimePicker>
-
+            <ComboBox SelectedIndex="0"  Margin="10,0" HorizontalAlignment="Left" Width="120px" Height="20px" Name="customers" ItemsSource="{Binding Customer}"  SelectionChanged="customer_SelectionChanged"></ComboBox>
+            <Label  Width="80px"  Margin="10,0" Height="30px">时间</Label>
+            <!--<control:DateTimePicker x:Name="orderTime" Width="140px" Height="30px"></control:DateTimePicker>-->
+            <ComboBox Name="LocaleCombo" Width="50" Visibility="Collapsed">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+            <DatePicker
+             Name="LocaleDatePicker"
+              Width="120"  Margin="10,0"
+              materialDesign:HintAssist.Hint="日期"
+              />
+            <materialDesign:TimePicker
+              Is24Hours="True"
+              x:Name="PresetTimePicker" Margin="10,0"
+              Width="100" materialDesign:HintAssist.Hint="时间"
+              SelectedTimeChanged="PresetTimePicker_SelectedTimeChanged" />
         </StackPanel>
-        <Button Click="AddGood_Click">添加商品</Button>
-        
-        <ScrollViewer>
+        <Button  Grid.Row="1" Click="AddGood_Click">添加商品</Button>
+
+        <ScrollViewer  Grid.Row="2">
             <DataGrid x:Name="GoodsGrid" AutoGenerateColumns="False" CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Visibility="Hidden"  Binding="{Binding Id}"/>
@@ -44,7 +68,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
-        <Grid Margin="10px">
+        <Grid Margin="10px"  Grid.Row="3" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -53,5 +77,5 @@
             <Button Grid.Column="1" Width="100px" Height="30px" Click="Cancel_Click">取消</Button>
         </Grid>
         
-    </StackPanel>
+    </Grid>
 </Window>
